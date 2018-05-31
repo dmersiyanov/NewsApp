@@ -14,6 +14,8 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
+import static android.support.v7.widget.RecyclerView.NO_POSITION;
+
 public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.VH> {
 
     private List<NewsItem> items;
@@ -23,30 +25,34 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.VH> {
         this.clickListener = clickListener;
     }
 
-
     @NonNull
     @Override
     public VH onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-        VH viewHolder = new VH(layoutInflater.inflate(R.layout.news_item_view, parent, false));
+        final VH viewHolder = new VH(layoutInflater.inflate(R.layout.news_item_view, parent, false));
+
+        viewHolder.img.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(clickListener != null) {
+                    int pos = viewHolder.getAdapterPosition();
+                    if(pos != NO_POSITION) {
+                        clickListener.onClick(items.get(pos));
+                    }
+                }
+            }
+        });
         return viewHolder;
     }
 
     @Override
     public void onBindViewHolder(@NonNull VH holder, int position) {
-        final NewsItem item = items.get(position);
-
-        Picasso.get().load(item.getImg()).into(holder.img);
+        final NewsItem item = items.get(holder.getAdapterPosition());
+        Picasso.get().load(item.getImg())
+                .placeholder(R.drawable.placeholder).error(R.drawable.placeholder)
+                .resize(1500, 1000).centerInside().into(holder.img);
         holder.title.setText(item.getTitle());
 
-        holder.img.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(clickListener != null) {
-                    clickListener.onClick(item);
-                }
-             }
-        });
     }
 
     @Override
@@ -70,11 +76,9 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.VH> {
             title = itemView.findViewById(R.id.news_title);
             img = itemView.findViewById(R.id.news_img);
         }
-
     }
 
     public interface OnNewsClickListener {
         void onClick(NewsItem item);
     }
-
 }

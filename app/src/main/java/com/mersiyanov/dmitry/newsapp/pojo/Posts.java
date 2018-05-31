@@ -8,7 +8,7 @@ public class Posts {
     @SerializedName("count")
     @Expose
     private Integer count;
-    @SerializedName("newsItem")
+    @SerializedName("list")
     @Expose
     private java.util.List<NewsItem> newsItem = null;
 

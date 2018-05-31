@@ -1,7 +1,6 @@
 package com.mersiyanov.dmitry.newsapp.ui;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -30,67 +29,63 @@ public class NewsFragment extends Fragment {
     private List<NewsItem> items = new ArrayList<>();
     private ApiHelper apiHelper = new ApiHelper();
 
-
     public static NewsFragment newInstance() {
         NewsFragment fragment = new NewsFragment();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
         return fragment;
-
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_news, container, false);
-        news_rv = rootView.findViewById(R.id.rv_news);
-        final LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
-        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        news_rv.setLayoutManager(layoutManager);
-        adapter = new NewsAdapter(clickListener);
-        news_rv.setAdapter(adapter);
 
-        loadData();
+        initRecycler(rootView);
+
+        setRetainInstance(true);
+
+//        if(getArguments() != null) {
+//            String query = getArguments().getString("query");
+//            loadData(query);
+//        }
+
 
         return rootView;
     }
 
-    private void loadData() {
-        apiHelper.getApi().getNews("дом")
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new SingleObserver<NewsResponse>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
+    public void loadData(String query) {
+        if(query != null) {
+            apiHelper.getApi().getNews(query)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new SingleObserver<NewsResponse>() {
+                        @Override
+                        public void onSubscribe(Disposable d) { }
 
-                    }
+                        @Override
+                        public void onSuccess(NewsResponse newsResponse) {
+                            items = newsResponse.getPosts().getNewsItem();
+                            adapter.setItems(items);
 
-                    @Override
-                    public void onSuccess(NewsResponse newsResponse) {
-                        items = newsResponse.getPosts().getNewsItem();
-                        adapter.setItems(items);
-//                        Toast.makeText(getContext(), items.get(0).getTitle(), Toast.LENGTH_SHORT).show();
+                        }
 
-                    }
+                        @Override
+                        public void onError(Throwable e) {
+                            e.printStackTrace();
+                            Toast.makeText(getContext(), e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
 
-                    @Override
-                    public void onError(Throwable e) {
-                        e.printStackTrace();
-                        Toast.makeText(getContext(), e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
-
-                    }
-                });
-
+                        }
+                    });
+        }
     }
 
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    private void initRecycler(View view) {
+        news_rv = view.findViewById(R.id.rv_news);
+        news_rv.setLayoutManager(new LinearLayoutManager(getContext()));
+        news_rv.setHasFixedSize(true);
+        adapter = new NewsAdapter(clickListener);
+        news_rv.setAdapter(adapter);
     }
 
-
-        private final NewsAdapter.OnNewsClickListener clickListener = new NewsAdapter.OnNewsClickListener() {
+    private final NewsAdapter.OnNewsClickListener clickListener = new NewsAdapter.OnNewsClickListener() {
 
             @Override
             public void onClick(NewsItem item) {

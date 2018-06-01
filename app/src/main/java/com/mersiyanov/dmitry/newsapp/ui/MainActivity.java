@@ -5,7 +5,6 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
@@ -22,9 +21,8 @@ public class MainActivity extends AppCompatActivity {
     private ViewPager mViewPager;
     private SearchView mSearchView;
     private NewsFragment newsFragment;
+    private SourceFragment sourceFragment;
     private String searchQuery;
-
-
 
 
     @Override
@@ -40,14 +38,26 @@ public class MainActivity extends AppCompatActivity {
         TabLayout tabLayout =  findViewById(R.id.tabs);
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
+        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                Toast.makeText(MainActivity.this, "Выбрана позиция " + position, Toast.LENGTH_SHORT).show();
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
 
         newsFragment = NewsFragment.newInstance();
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-//        if(newsFragment.isAdded()) {
-//            transaction.replace(R.id.container, newsFragment);
-//            transaction.commit();
-//        }
-
+        sourceFragment = SourceFragment.newInstance();
 
 
     }
@@ -63,10 +73,10 @@ public class MainActivity extends AppCompatActivity {
         mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                Toast.makeText(MainActivity.this, query, Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "Поиск по запросу" + query, Toast.LENGTH_SHORT).show();
                 mSearchView.clearFocus();
                 searchQuery = query;
-                newsFragment.loadData(query);
+                newsFragment.loadNews(query);
 
                 return true;
             }
@@ -80,17 +90,6 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        // Handle action bar item clicks here. The action bar will
-//        // automatically handle clicks on the Home/Up button, so long
-//        // as you specify a parent activity in AndroidManifest.xml.
-//        int id = item.getItemId();
-//
-//
-//        return super.onOptionsItemSelected(item);
-//    }
-
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
         public SectionsPagerAdapter(FragmentManager fm) {
@@ -101,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
         public Fragment getItem(int position) {
             switch (position) {
                 case 0: return newsFragment;
-                case 1: return SourceFragment.newInstance();
+                case 1: return sourceFragment;
                 default: return null;
             }
 
@@ -109,13 +108,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public int getCount() { return 2; }
+
+
     }
-
-//    private <T extends Fragment> initFragment(String query) {
-//
-//        return NewsFragment.newInstance(query);;
-//
-//    }
-
-
 }

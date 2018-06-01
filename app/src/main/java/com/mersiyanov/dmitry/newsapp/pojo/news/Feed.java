@@ -1,4 +1,4 @@
-package com.mersiyanov.dmitry.newsapp.pojo;
+package com.mersiyanov.dmitry.newsapp.pojo.news;
 
 
 import com.google.gson.annotations.Expose;

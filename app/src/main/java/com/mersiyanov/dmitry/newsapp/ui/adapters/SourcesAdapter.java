@@ -1,4 +1,4 @@
-package com.mersiyanov.dmitry.newsapp.ui;
+package com.mersiyanov.dmitry.newsapp.ui.adapters;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -9,19 +9,19 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.mersiyanov.dmitry.newsapp.R;
-import com.mersiyanov.dmitry.newsapp.pojo.NewsItem;
+import com.mersiyanov.dmitry.newsapp.pojo.SourceItem;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
 import static android.support.v7.widget.RecyclerView.NO_POSITION;
 
-public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.VH> {
+public class SourcesAdapter extends RecyclerView.Adapter<SourcesAdapter.VH> {
 
-    private List<NewsItem> items;
-    private OnNewsClickListener clickListener;
+    private List<SourceItem> items;
+    private OnSourceClickListener clickListener;
 
-    public NewsAdapter(OnNewsClickListener clickListener) {
+    public SourcesAdapter(OnSourceClickListener clickListener) {
         this.clickListener = clickListener;
     }
 
@@ -29,9 +29,9 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.VH> {
     @Override
     public VH onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-        final VH viewHolder = new VH(layoutInflater.inflate(R.layout.news_item_view, parent, false));
+        final VH viewHolder = new VH(layoutInflater.inflate(R.layout.source_item_view, parent, false));
 
-        viewHolder.img.setOnClickListener(new View.OnClickListener() {
+        viewHolder.subscibe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(clickListener != null) {
@@ -47,10 +47,11 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.VH> {
 
     @Override
     public void onBindViewHolder(@NonNull VH holder, int position) {
-        final NewsItem item = items.get(holder.getAdapterPosition());
-        Picasso.get().load(item.getImg())
+        final SourceItem item = items.get(holder.getAdapterPosition());
+        Picasso.get().load("http://img.anews.com/media/" + item.getImg())
                 .placeholder(R.drawable.placeholder).error(R.drawable.placeholder)
-                .resize(1500, 1000).centerInside().into(holder.img);
+                .resize(400, 400).centerInside()
+                .into(holder.img);
         holder.title.setText(item.getTitle());
 
     }
@@ -61,7 +62,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.VH> {
         return items.size();
     }
 
-    public void setItems(List<NewsItem> items) {
+    public void setItems(List<SourceItem> items) {
         this.items = items;
         notifyDataSetChanged();
     }
@@ -70,15 +71,17 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.VH> {
 
         private final TextView title;
         private final ImageView img;
+        private final TextView subscibe;
 
         public VH(View itemView) {
             super(itemView);
-            title = itemView.findViewById(R.id.news_title);
-            img = itemView.findViewById(R.id.news_img);
+            title = itemView.findViewById(R.id.source_title);
+            img = itemView.findViewById(R.id.source_img);
+            subscibe = itemView.findViewById(R.id.source_subscribe);
         }
     }
 
-    public interface OnNewsClickListener {
-        void onClick(NewsItem item);
+    public interface OnSourceClickListener {
+        void onClick(SourceItem item);
     }
 }

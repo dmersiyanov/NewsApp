@@ -58,13 +58,14 @@ public class NewsFragment extends Fragment {
     }
 
     public void loadNews(String query) {
-        if(query != null) {
+        if (query != null) {
             apiHelper.getApi().getNews(query)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(new SingleObserver<NewsResponse>() {
                         @Override
-                        public void onSubscribe(Disposable d) { }
+                        public void onSubscribe(Disposable d) {
+                        }
 
                         @Override
                         public void onSuccess(NewsResponse newsResponse) {
@@ -97,16 +98,14 @@ public class NewsFragment extends Fragment {
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
 
-                if(dy > 0) //check for scroll down
+                if (dy > 0) //check for scroll down
                 {
                     visibleItemCount = linearLayoutManager.getChildCount();
                     totalItemCount = linearLayoutManager.getItemCount();
                     pastVisiblesItems = linearLayoutManager.findFirstVisibleItemPosition();
 
-                    if (loading)
-                    {
-                        if ( (visibleItemCount + pastVisiblesItems) >= totalItemCount)
-                        {
+                    if (loading) {
+                        if ((visibleItemCount + pastVisiblesItems) >= totalItemCount) {
                             loading = false;
                             Log.v("...", "Last Item Wow !");
                             //Do pagination.. i.e. fetch new data
@@ -120,16 +119,15 @@ public class NewsFragment extends Fragment {
         });
 
 
-
     }
 
     private final NewsAdapter.OnNewsClickListener clickListener = new NewsAdapter.OnNewsClickListener() {
 
-            @Override
-            public void onClick(NewsItem item) {
-                Toast.makeText(getContext(), "Клик на новость #" + item.getId(), Toast.LENGTH_SHORT).show();
-            }
-        };
+        @Override
+        public void onClick(NewsItem item) {
+            Toast.makeText(getContext(), "Клик на новость #" + item.getId(), Toast.LENGTH_SHORT).show();
+        }
+    };
 
 }
 

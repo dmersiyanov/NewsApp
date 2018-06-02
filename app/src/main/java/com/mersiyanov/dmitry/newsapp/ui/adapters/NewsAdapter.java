@@ -50,7 +50,9 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.VH> {
         final NewsItem item = items.get(holder.getAdapterPosition());
         Picasso.get().load(item.getImg())
                 .placeholder(R.drawable.placeholder).error(R.drawable.placeholder)
-                .resize(1500, 1000).centerInside().into(holder.img);
+                .resize(500, 250)
+                .centerCrop()
+                .into(holder.img);
         holder.title.setText(item.getTitle());
 
     }

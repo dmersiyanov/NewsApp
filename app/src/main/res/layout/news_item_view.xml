@@ -1,17 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:paddingBottom="8dp"
+
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
     <ImageView
         android:id="@+id/news_img"
-        android:layout_width="wrap_content"
-        android:layout_height="241dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:adjustViewBounds="true"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"/>
+        android:src="@drawable/test_img"
+        app:layout_constraintBottom_toTopOf="@+id/news_title"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:textColor="@android:color/black"
@@ -21,13 +27,14 @@
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginTop="8dp"
-        android:paddingBottom="5dp"
+        android:paddingBottom="10dp"
+        android:paddingTop="-20dp"
         android:paddingEnd="8dp"
         android:maxLines="3"
         android:ellipsize="end"
         android:text="News Title News Title News Title News Title News TitleNews TitleNews Title"
         android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/news_img"
         app:layout_constraintTop_toBottomOf="@+id/news_img" />
 
-</android.support.constraint.ConstraintLayout>
+</LinearLayout>

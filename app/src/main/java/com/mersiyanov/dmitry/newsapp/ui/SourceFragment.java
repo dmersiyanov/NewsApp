@@ -25,7 +25,6 @@ import io.reactivex.schedulers.Schedulers;
 
 public class SourceFragment extends Fragment {
 
-    private RecyclerView sources_rv;
     private SourcesAdapter adapter;
     private List<SourceItem> items = new ArrayList<>();
     private ApiHelper apiHelper = new ApiHelper();
@@ -43,13 +42,13 @@ public class SourceFragment extends Fragment {
 
         initRecycler(rootView);
 
-        loadFeeds("дом");
+//        loadFeeds("дом");
 
         return rootView;
     }
 
     private void initRecycler(View view) {
-        sources_rv = view.findViewById(R.id.rv_sources);
+        RecyclerView sources_rv = view.findViewById(R.id.rv_sources);
         GridLayoutManager layoutManager = new GridLayoutManager(getContext(),3);
         sources_rv.setLayoutManager(layoutManager);
         sources_rv.setHasFixedSize(true);

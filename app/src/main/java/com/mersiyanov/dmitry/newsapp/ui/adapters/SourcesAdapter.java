@@ -2,6 +2,7 @@ package com.mersiyanov.dmitry.newsapp.ui.adapters;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,7 +51,6 @@ public class SourcesAdapter extends RecyclerView.Adapter<SourcesAdapter.VH> {
         final SourceItem item = items.get(holder.getAdapterPosition());
         Picasso.get().load("http://img.anews.com/media/" + item.getImg())
                 .placeholder(R.drawable.placeholder).error(R.drawable.placeholder)
-                .resize(400, 400).centerInside()
                 .into(holder.img);
         holder.title.setText(item.getTitle());
 
@@ -63,8 +63,13 @@ public class SourcesAdapter extends RecyclerView.Adapter<SourcesAdapter.VH> {
     }
 
     public void setItems(List<SourceItem> items) {
-        this.items = items;
-        notifyDataSetChanged();
+        if(items != null) {
+            this.items = items;
+            notifyDataSetChanged();
+        } else {
+            Log.e(this.getClass().toString(), "Items are null");
+
+        }
     }
 
     static class VH extends RecyclerView.ViewHolder{

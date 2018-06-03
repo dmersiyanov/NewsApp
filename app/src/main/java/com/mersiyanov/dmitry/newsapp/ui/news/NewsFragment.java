@@ -181,13 +181,13 @@ public class NewsFragment extends Fragment implements NewsScreenContract.View {
 
     @Override
     public void showError() {
-        Snackbar.make(getView(), "Произошла ошибка", Snackbar.LENGTH_LONG).show();
+        Snackbar.make(getView(), R.string.error_text, Snackbar.LENGTH_LONG).show();
     }
 
     @Override
-    public void showData(List<NewsItem> newsItems) {
+    public void showData(List<NewsItem> newsItems, Pages pages) {
         adapter.setItems(newsItems);
-//        pagesCounter = newsResponse.getPages();
+        pagesCounter = pages;
         progressBar.setVisibility(View.GONE);
         news_rv.setVisibility(View.VISIBLE);
     }

@@ -2,6 +2,7 @@ package com.mersiyanov.dmitry.newsapp.ui.news;
 
 import com.mersiyanov.dmitry.newsapp.pojo.news.NewsItem;
 import com.mersiyanov.dmitry.newsapp.pojo.news.NewsResponse;
+import com.mersiyanov.dmitry.newsapp.pojo.news.Pages;
 
 import java.util.List;
 
@@ -15,7 +16,7 @@ public interface NewsScreenContract {
 
         void showError();
 
-        void showData(List<NewsItem> newsItems);
+        void showData(List<NewsItem> newsItems, Pages pages);
 
         void setPresenter(Presenter presenter);
     }

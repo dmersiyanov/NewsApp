@@ -38,7 +38,7 @@ public class NewsPresenter implements NewsScreenContract.Presenter {
 
                 @Override
                 public void onSuccess(NewsResponse newsResponse) {
-                    view.showData(newsResponse.getPosts().getNewsItem());
+                    view.showData(newsResponse.getPosts().getNewsItem(), newsResponse.getPages());
                 }
 
                 @Override

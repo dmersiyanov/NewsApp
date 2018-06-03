@@ -3,5 +3,6 @@
     <string name="tab_text_1">НОВОСТИ</string>
     <string name="tab_text_2">ИСТОЧНИКИ</string>
     <string name="search_title">Поиск</string>
+    <string name="error_text">Произошла ошибка. Попробуйте еще</string>
 
 </resources>

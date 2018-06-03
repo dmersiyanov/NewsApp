@@ -18,12 +18,9 @@ public class NewsRepository implements NewsScreenContract.Repo {
 
     @Override
     public Single<NewsResponse> load(String query) {
-        if(cache == null) {
-            cache = apiHelper.getApi().getNews(query)
+        return apiHelper.getApi().getNews(query)
                     .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .cache();
-        }
-        return cache;
+                    .observeOn(AndroidSchedulers.mainThread());
+
     }
 }

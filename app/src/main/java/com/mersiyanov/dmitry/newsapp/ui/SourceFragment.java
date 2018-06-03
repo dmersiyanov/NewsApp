@@ -70,7 +70,7 @@ public class SourceFragment extends Fragment {
                         @Override
                         public void onError(Throwable e) {
                             e.printStackTrace();
-                            Toast.makeText(getContext(), e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(getContext(), e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
 
                         }
                     });

@@ -11,15 +11,21 @@ import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.mersiyanov.dmitry.newsapp.R;
+import com.mersiyanov.dmitry.newsapp.network.ApiHelper;
+import com.mersiyanov.dmitry.newsapp.ui.news.NewsFragment;
+import com.mersiyanov.dmitry.newsapp.ui.news.NewsPresenter;
+import com.mersiyanov.dmitry.newsapp.ui.news.NewsRepository;
 
 public class MainActivity extends AppCompatActivity {
 
     private SearchView mSearchView;
     private NewsFragment newsFragment;
     private SourceFragment sourceFragment;
+    private ApiHelper apiHelper = new ApiHelper();
+    private NewsRepository repository = new NewsRepository(apiHelper);
+    private NewsPresenter newsPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,7 +35,9 @@ public class MainActivity extends AppCompatActivity {
         initUI();
 
         newsFragment = NewsFragment.newInstance();
+        newsPresenter = new NewsPresenter(repository, newsFragment);
         sourceFragment = SourceFragment.newInstance();
+
 
     }
 
@@ -55,9 +63,9 @@ public class MainActivity extends AppCompatActivity {
         mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                Toast.makeText(MainActivity.this, "Поиск по запросу " + query, Toast.LENGTH_SHORT).show();
                 mSearchView.clearFocus();
-                newsFragment.loadNews(query);
+//                newsFragment.loadNews(query);
+                newsPresenter.load(query);
                 sourceFragment.loadFeeds(query);
                 return true;
             }

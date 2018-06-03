@@ -1,10 +1,10 @@
 package com.mersiyanov.dmitry.newsapp.ui.news;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.mersiyanov.dmitry.newsapp.NewsApp;
 import com.mersiyanov.dmitry.newsapp.R;
 import com.mersiyanov.dmitry.newsapp.network.ApiHelper;
 import com.mersiyanov.dmitry.newsapp.pojo.news.NewsItem;
@@ -26,6 +27,8 @@ import com.mersiyanov.dmitry.newsapp.ui.adapters.NewsAdapter;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import io.reactivex.SingleObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -33,7 +36,8 @@ import io.reactivex.schedulers.Schedulers;
 
 public class NewsFragment extends Fragment implements NewsScreenContract.View {
 
-    private NewsScreenContract.Presenter presenter;
+    @Inject
+    NewsPresenter presenter;
     private NewsAdapter adapter;
     private ApiHelper apiHelper = new ApiHelper();
     private Pages pagesCounter;
@@ -47,14 +51,15 @@ public class NewsFragment extends Fragment implements NewsScreenContract.View {
     }
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public void onAttach(Context context) {
+        NewsApp.component.injectsFrag(this);
 
+        super.onAttach(context);
     }
 
     @Override
-    public void onDetach() {
-        super.onDetach();
+    public void onDestroy() {
+        super.onDestroy();
         presenter.detachView();
     }
 
@@ -64,6 +69,8 @@ public class NewsFragment extends Fragment implements NewsScreenContract.View {
         progressBar = rootView.findViewById(R.id.news_progress);
         progressBar.getIndeterminateDrawable().setColorFilter(Color.BLACK, PorterDuff.Mode.SRC_IN);
         initRecycler(rootView);
+
+        presenter.attachView(this);
 
         return rootView;
     }
@@ -190,11 +197,6 @@ public class NewsFragment extends Fragment implements NewsScreenContract.View {
 //        pagesCounter = newsResponse.getPages();
         progressBar.setVisibility(View.GONE);
         news_rv.setVisibility(View.VISIBLE);
-    }
-
-    @Override
-    public void setPresenter(NewsScreenContract.Presenter presenter) {
-        this.presenter = presenter;
     }
 }
 

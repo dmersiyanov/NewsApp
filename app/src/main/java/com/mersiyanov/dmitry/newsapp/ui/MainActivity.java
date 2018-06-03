@@ -12,32 +12,35 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.mersiyanov.dmitry.newsapp.NewsApp;
 import com.mersiyanov.dmitry.newsapp.R;
-import com.mersiyanov.dmitry.newsapp.network.ApiHelper;
 import com.mersiyanov.dmitry.newsapp.ui.news.NewsFragment;
 import com.mersiyanov.dmitry.newsapp.ui.news.NewsPresenter;
-import com.mersiyanov.dmitry.newsapp.ui.news.NewsRepository;
+
+import javax.inject.Inject;
+
 
 public class MainActivity extends AppCompatActivity {
 
     private SearchView mSearchView;
     private NewsFragment newsFragment;
     private SourceFragment sourceFragment;
-    private ApiHelper apiHelper = new ApiHelper();
-    private NewsRepository repository = new NewsRepository(apiHelper);
-    private NewsPresenter newsPresenter;
+//    private ApiHelper apiHelper = new ApiHelper();
+//    private NewsRepository repository = new NewsRepository(apiHelper);
+    @Inject NewsPresenter newsPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        NewsApp.component.injectsAct(this);
+
+
         initUI();
 
         newsFragment = NewsFragment.newInstance();
-        newsPresenter = new NewsPresenter(repository, newsFragment);
         sourceFragment = SourceFragment.newInstance();
-
 
     }
 

@@ -1,8 +1,8 @@
 package com.mersiyanov.dmitry.newsapp.ui.news;
 
-import android.support.annotation.NonNull;
-
 import com.mersiyanov.dmitry.newsapp.pojo.news.NewsResponse;
+
+import javax.inject.Inject;
 
 import io.reactivex.SingleObserver;
 import io.reactivex.disposables.Disposable;
@@ -12,10 +12,9 @@ public class NewsPresenter implements NewsScreenContract.Presenter {
     private NewsScreenContract.View view;
     private NewsScreenContract.Repo repo;
 
-    public NewsPresenter(NewsScreenContract.Repo repo, @NonNull NewsScreenContract.View view) {
+    @Inject
+    public NewsPresenter(NewsScreenContract.Repo repo) {
         this.repo = repo;
-        this.view = view;
-        view.setPresenter(this);
     }
 
     @Override

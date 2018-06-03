@@ -17,7 +17,6 @@ public interface NewsScreenContract {
 
         void showData(List<NewsItem> newsItems);
 
-        void setPresenter(Presenter presenter);
     }
 
     interface Presenter {

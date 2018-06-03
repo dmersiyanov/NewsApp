@@ -12,6 +12,7 @@ public class NewsRepository implements NewsScreenContract.Repo {
     private final ApiHelper apiHelper;
     private Single<NewsResponse> cache;
 
+
     public NewsRepository(ApiHelper apiHelper) {
         this.apiHelper = apiHelper;
     }

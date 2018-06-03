@@ -1,5 +1,7 @@
 package com.mersiyanov.dmitry.newsapp.network;
 
+
+
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
@@ -8,6 +10,9 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ApiHelper {
 
+
+    public ApiHelper() {
+    }
 
     private Retrofit getRetrofit(){
         final OkHttpClient client = new OkHttpClient.Builder()

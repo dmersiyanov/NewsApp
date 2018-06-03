@@ -17,50 +17,31 @@ import com.mersiyanov.dmitry.newsapp.R;
 
 public class MainActivity extends AppCompatActivity {
 
-    private SectionsPagerAdapter mSectionsPagerAdapter;
-    private ViewPager mViewPager;
     private SearchView mSearchView;
     private NewsFragment newsFragment;
     private SourceFragment sourceFragment;
-    private String searchQuery;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        initUI();
+
+        newsFragment = NewsFragment.newInstance();
+        sourceFragment = SourceFragment.newInstance();
+
+    }
+
+    private void initUI() {
         Toolbar toolbar =  findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
-        mViewPager = findViewById(R.id.container);
+        SectionsPagerAdapter mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+        ViewPager mViewPager = findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
         TabLayout tabLayout =  findViewById(R.id.tabs);
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
-        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                Toast.makeText(MainActivity.this, "Выбрана позиция " + position, Toast.LENGTH_SHORT).show();
-
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });
-
-        newsFragment = NewsFragment.newInstance();
-        sourceFragment = SourceFragment.newInstance();
-//        sourceFragment.setArguments();
-
-
     }
 
 
@@ -76,10 +57,8 @@ public class MainActivity extends AppCompatActivity {
             public boolean onQueryTextSubmit(String query) {
                 Toast.makeText(MainActivity.this, "Поиск по запросу " + query, Toast.LENGTH_SHORT).show();
                 mSearchView.clearFocus();
-                searchQuery = query;
                 newsFragment.loadNews(query);
                 sourceFragment.loadFeeds(query);
-
                 return true;
             }
 

@@ -68,6 +68,11 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.VH> {
         notifyDataSetChanged();
     }
 
+    public void addItems(List<NewsItem> items) {
+        this.items.addAll(items);
+        notifyDataSetChanged();
+    }
+
     static class VH extends RecyclerView.ViewHolder{
 
         private final TextView title;

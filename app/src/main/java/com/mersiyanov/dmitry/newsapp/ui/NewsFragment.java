@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,10 +13,8 @@ import com.mersiyanov.dmitry.newsapp.R;
 import com.mersiyanov.dmitry.newsapp.network.ApiHelper;
 import com.mersiyanov.dmitry.newsapp.pojo.news.NewsItem;
 import com.mersiyanov.dmitry.newsapp.pojo.news.NewsResponse;
+import com.mersiyanov.dmitry.newsapp.pojo.news.Pages;
 import com.mersiyanov.dmitry.newsapp.ui.adapters.NewsAdapter;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import io.reactivex.SingleObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -26,13 +23,13 @@ import io.reactivex.schedulers.Schedulers;
 
 public class NewsFragment extends Fragment {
 
-    private RecyclerView news_rv;
     private NewsAdapter adapter;
-    private List<NewsItem> items = new ArrayList<>();
+//    private List<NewsItem> items = new ArrayList<>();
     private ApiHelper apiHelper = new ApiHelper();
-
+//    private static int TOTAL_PAGES;
+    private Pages pagesCounter;
+    private String query;
     private boolean loading = true;
-    int pastVisiblesItems, visibleItemCount, totalItemCount;
 
 
     public static NewsFragment newInstance() {
@@ -43,22 +40,13 @@ public class NewsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_news, container, false);
-
         initRecycler(rootView);
-
-        setRetainInstance(true);
-
-//        if(getArguments() != null) {
-//            String query = getArguments().getString("query");
-//            loadNews(query);
-//        }
-
-
         return rootView;
     }
 
     public void loadNews(String query) {
         if (query != null) {
+            this.query = query;
             apiHelper.getApi().getNews(query)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
@@ -69,8 +57,8 @@ public class NewsFragment extends Fragment {
 
                         @Override
                         public void onSuccess(NewsResponse newsResponse) {
-                            items = newsResponse.getPosts().getNewsItem();
-                            adapter.setItems(items);
+                            adapter.setItems(newsResponse.getPosts().getNewsItem());
+                            pagesCounter = newsResponse.getPages();
 
                         }
 
@@ -85,7 +73,7 @@ public class NewsFragment extends Fragment {
     }
 
     private void initRecycler(View view) {
-        news_rv = view.findViewById(R.id.rv_news);
+        RecyclerView news_rv = view.findViewById(R.id.rv_news);
         final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         news_rv.setLayoutManager(linearLayoutManager);
         news_rv.setHasFixedSize(true);
@@ -98,23 +86,40 @@ public class NewsFragment extends Fragment {
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
 
-                if (dy > 0) //check for scroll down
-                {
-                    visibleItemCount = linearLayoutManager.getChildCount();
-                    totalItemCount = linearLayoutManager.getItemCount();
-                    pastVisiblesItems = linearLayoutManager.findFirstVisibleItemPosition();
+                if (dy > 0) {
+                    int visibleItemCount = linearLayoutManager.getChildCount();
+                    int totalItemCount = linearLayoutManager.getItemCount();
+                    int pastVisiblesItems = linearLayoutManager.findFirstVisibleItemPosition();
 
                     if (loading) {
                         if ((visibleItemCount + pastVisiblesItems) >= totalItemCount) {
                             loading = false;
-                            Log.v("...", "Last Item Wow !");
-                            //Do pagination.. i.e. fetch new data
-                            Toast.makeText(getContext(), "Last Item Wow !", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(), "Загрузка страницы #" +pagesCounter.getNext(), Toast.LENGTH_SHORT).show();
 
+                            apiHelper.getApi().getNewsByPage(query, pagesCounter.getNext().toString())
+                                    .subscribeOn(Schedulers.io())
+                                    .observeOn(AndroidSchedulers.mainThread())
+                                    .subscribe(new SingleObserver<NewsResponse>() {
+                                        @Override
+                                        public void onSubscribe(Disposable d) {}
+
+                                        @Override
+                                        public void onSuccess(NewsResponse newsResponse) {
+                                            pagesCounter = newsResponse.getPages();
+                                            adapter.addItems(newsResponse.getPosts().getNewsItem());
+                                            loading = true;
+                                        }
+
+                                        @Override
+                                        public void onError(Throwable e) {
+                                            e.printStackTrace();
+                                            Toast.makeText(getContext(), e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+
+                                        }
+                                    });
                         }
                     }
                 }
-
             }
         });
 

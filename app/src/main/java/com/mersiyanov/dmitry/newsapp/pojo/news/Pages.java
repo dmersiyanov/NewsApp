@@ -11,6 +11,9 @@ public class Pages {
     @SerializedName("next")
     @Expose
     private Integer next;
+    @SerializedName("prev")
+    @Expose
+    private Integer prev;
     @SerializedName("page")
     @Expose
     private Integer page;
@@ -32,6 +35,14 @@ public class Pages {
 
     public void setNext(Integer next) {
         this.next = next;
+    }
+
+    public Integer getPrev() {
+        return prev;
+    }
+
+    public void setPrev(Integer prev) {
+        this.prev = prev;
     }
 
     public Integer getPage() {

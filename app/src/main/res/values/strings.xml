@@ -3,5 +3,8 @@
     <string name="tab_text_1">НОВОСТИ</string>
     <string name="tab_text_2">ИСТОЧНИКИ</string>
     <string name="search_title">Поиск</string>
+    <string name="page_loading">Загрузка страницы #</string>
+    <string name="you_subsribed">Вы подписаны на</string>
+    <string name="search_toast_text">Поиск по запросу</string>
 
 </resources>

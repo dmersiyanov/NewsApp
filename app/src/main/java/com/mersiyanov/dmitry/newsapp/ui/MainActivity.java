@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
         mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                Toast.makeText(MainActivity.this, "Поиск по запросу " + query, Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, getString(R.string.search_toast_text) + query, Toast.LENGTH_SHORT).show();
                 mSearchView.clearFocus();
                 newsFragment.loadNews(query);
                 sourceFragment.loadFeeds(query);

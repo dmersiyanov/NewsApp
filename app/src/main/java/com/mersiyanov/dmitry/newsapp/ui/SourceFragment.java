@@ -36,9 +36,8 @@ public class SourceFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_sources, container, false);
-
         initRecycler(rootView);
-
+        setRetainInstance(true);
         return rootView;
     }
 
@@ -80,7 +79,7 @@ public class SourceFragment extends Fragment {
     private SourcesAdapter.OnSourceClickListener clickListener = new SourcesAdapter.OnSourceClickListener() {
         @Override
         public void onClick(SourceItem item) {
-            Toast.makeText(getContext(), "Вы подписаны на " + item.getTitle(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), getString(R.string.you_subsribed) + item.getTitle(), Toast.LENGTH_SHORT).show();
 
         }
     };

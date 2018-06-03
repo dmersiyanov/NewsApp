@@ -1,6 +1,5 @@
 package com.mersiyanov.dmitry.newsapp.ui;
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
@@ -16,7 +15,6 @@ import android.widget.Toast;
 
 import com.mersiyanov.dmitry.newsapp.R;
 import com.mersiyanov.dmitry.newsapp.network.ApiHelper;
-import com.mersiyanov.dmitry.newsapp.pojo.news.NewsItem;
 import com.mersiyanov.dmitry.newsapp.pojo.news.NewsResponse;
 import com.mersiyanov.dmitry.newsapp.pojo.news.Pages;
 import com.mersiyanov.dmitry.newsapp.ui.adapters.NewsAdapter;
@@ -46,6 +44,7 @@ public class NewsFragment extends Fragment {
         progressBar = rootView.findViewById(R.id.news_progress);
         progressBar.getIndeterminateDrawable().setColorFilter(Color.BLACK, PorterDuff.Mode.SRC_IN);
         initRecycler(rootView);
+        setRetainInstance(true);
         return rootView;
     }
 
@@ -84,7 +83,7 @@ public class NewsFragment extends Fragment {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         news_rv.setLayoutManager(linearLayoutManager);
         news_rv.setHasFixedSize(true);
-        adapter = new NewsAdapter(clickListener);
+        adapter = new NewsAdapter();
         news_rv.setAdapter(adapter);
 
         addPagination(news_rv, linearLayoutManager);
@@ -107,7 +106,7 @@ public class NewsFragment extends Fragment {
                             loading = false;
 
                             if(pagesCounter.getNext() != null) {
-                                Toast.makeText(getContext(), "Загрузка страницы #" +pagesCounter.getNext(), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getContext(), getString(R.string.page_loading) + pagesCounter.getNext(), Toast.LENGTH_SHORT).show();
 
                                 apiHelper.getApi().getNewsByPage(query, pagesCounter.getNext().toString())
                                         .subscribeOn(Schedulers.io())
@@ -139,20 +138,6 @@ public class NewsFragment extends Fragment {
             }
         });
     }
-
-    private final NewsAdapter.OnNewsClickListener clickListener = new NewsAdapter.OnNewsClickListener() {
-
-        @Override
-        public void onClick(NewsItem item) {
-            Intent intent = new Intent(getContext(), FullScreenNewsActivity.class);
-            intent.putExtra("desc", item.getContent());
-            intent.putExtra("img", item.getImg());
-            intent.putExtra("title", item.getTitle());
-            startActivity(intent);
-
-//            Toast.makeText(getContext(), "Клик на новость #" + item.getId(), Toast.LENGTH_SHORT).show();
-        }
-    };
 
 }
 

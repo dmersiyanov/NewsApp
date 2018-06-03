@@ -14,35 +14,15 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-import static android.support.v7.widget.RecyclerView.NO_POSITION;
-
 public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.VH> {
 
     private List<NewsItem> items;
-    private OnNewsClickListener clickListener;
-
-    public NewsAdapter(OnNewsClickListener clickListener) {
-        this.clickListener = clickListener;
-    }
 
     @NonNull
     @Override
     public VH onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-        final VH viewHolder = new VH(layoutInflater.inflate(R.layout.news_item_view, parent, false));
-
-        viewHolder.img.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(clickListener != null) {
-                    int pos = viewHolder.getAdapterPosition();
-                    if(pos != NO_POSITION) {
-                        clickListener.onClick(items.get(pos));
-                    }
-                }
-            }
-        });
-        return viewHolder;
+        return new VH(layoutInflater.inflate(R.layout.news_item_view, parent, false));
     }
 
     @Override
@@ -83,9 +63,5 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.VH> {
             title = itemView.findViewById(R.id.news_title);
             img = itemView.findViewById(R.id.news_img);
         }
-    }
-
-    public interface OnNewsClickListener {
-        void onClick(NewsItem item);
     }
 }

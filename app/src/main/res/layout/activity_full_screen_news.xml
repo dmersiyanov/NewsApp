@@ -1,8 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="16dp"
     tools:context=".ui.FullScreenNewsActivity">
 
-</android.support.constraint.ConstraintLayout>
+    <ImageView
+        android:layout_marginBottom="10dp"
+        android:id="@+id/full_news_img"
+        android:adjustViewBounds="true"
+        android:src="@drawable/test_img"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:textStyle="bold"
+        android:textColor="@android:color/black"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:text="Title news"
+        android:id="@+id/full_news_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/full_news_desc"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginTop="8dp"
+        android:text="Как сообщает портал Akket.com, смартфон Xiaomi Mi MIX 2S будет продаваться в «российской» версии на Tmall, то есть оплачивать дополнительные пошлины не нужно — товар уже сертифицирован в РФ."
+        app:layout_constraintTop_toTopOf="@+id/full_news_img"
+        tools:layout_editor_absoluteX="3dp" />
+
+</LinearLayout>

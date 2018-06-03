@@ -2,5 +2,6 @@
     <string name="app_name">NewsApp</string>
     <string name="tab_text_1">НОВОСТИ</string>
     <string name="tab_text_2">ИСТОЧНИКИ</string>
+    <string name="search_title">Поиск</string>
 
 </resources>

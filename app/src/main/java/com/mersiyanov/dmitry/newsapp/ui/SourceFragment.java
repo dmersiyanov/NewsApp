@@ -30,10 +30,7 @@ public class SourceFragment extends Fragment {
     private ApiHelper apiHelper = new ApiHelper();
 
     public static SourceFragment newInstance() {
-        SourceFragment fragment = new SourceFragment();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
-        return fragment;
+        return new SourceFragment();
     }
 
     @Override
@@ -41,8 +38,6 @@ public class SourceFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_sources, container, false);
 
         initRecycler(rootView);
-
-//        loadFeeds("дом");
 
         return rootView;
     }
@@ -82,7 +77,7 @@ public class SourceFragment extends Fragment {
         }
     }
 
-    SourcesAdapter.OnSourceClickListener clickListener = new SourcesAdapter.OnSourceClickListener() {
+    private SourcesAdapter.OnSourceClickListener clickListener = new SourcesAdapter.OnSourceClickListener() {
         @Override
         public void onClick(SourceItem item) {
             Toast.makeText(getContext(), "Вы подписаны на " + item.getTitle(), Toast.LENGTH_SHORT).show();
